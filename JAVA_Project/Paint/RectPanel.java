@@ -197,6 +197,8 @@ public class RectPanel extends JPanel implements ActionListener, MouseListener, 
 			break;
 
 		case TEXT:
+			if (width <= 100) 
+				return;
 			if (jtextField != null)
 				DrawField();
 

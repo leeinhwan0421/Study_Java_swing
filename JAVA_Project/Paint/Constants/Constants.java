@@ -5,7 +5,8 @@ public class Constants
 {
 	public static final String fileFormat = "png";
 	public static final String fileDescription = "*.png (이미지 파일)";
-	public static final String defaultfilePath = "C:/Users/rltjd/OneDrive/바탕 화면/자바 그림판용 사진";
+	public static final String defaultfilePath = "Paint/Picture";
+	public static final String defaulticonPath = "Paint/Icon/Icon.png";
 
 	public static final int WINDOW_WIDTH = 1280;
 	public static final int WINDOW_HEIGHT = 720;
@@ -22,10 +23,10 @@ public class Constants
 		PENCIL,
 		ERASER,
 		LINE,
+		CIRCLE,
 		RECTANGLE,
 		TEXT,
 		TEXTEDIT,
-		CIRCLE,
 	}
 
 	public enum StrokeMode

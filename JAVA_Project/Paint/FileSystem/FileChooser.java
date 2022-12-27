@@ -39,7 +39,6 @@ public class FileChooser extends JFrame implements ActionListener
     public void actionPerformed(ActionEvent e) 
     {
         String buttonActionCommand = e.getActionCommand();
-
 		mode = Constants.SetFileMode(buttonActionCommand);
 
         switch(mode)
@@ -59,7 +58,6 @@ public class FileChooser extends JFrame implements ActionListener
                 }
             break;
             default:
-
                 break;
         }
     }
