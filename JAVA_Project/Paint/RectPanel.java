@@ -120,7 +120,8 @@ public class RectPanel extends JPanel implements ActionListener, MouseListener, 
 			strokeMode = Constants.SetStrokeMode(buttonActionCommand);
 		}
 		else if (buttonActionCommand == "연필" || buttonActionCommand == "지우개" || buttonActionCommand == "네모" ||
-				 buttonActionCommand == "텍스트" || buttonActionCommand == "동그라미" || buttonActionCommand == "직선")
+				 buttonActionCommand == "텍스트" || buttonActionCommand == "동그라미" || buttonActionCommand == "직선" ||
+				 buttonActionCommand == "꽉찬네모" || buttonActionCommand == "채우기" || buttonActionCommand == "구현중")
 		{
 			toolMode = Constants.SetToolMode(e.getActionCommand());
 		}
@@ -186,14 +187,17 @@ public class RectPanel extends JPanel implements ActionListener, MouseListener, 
 			g.setColor(colors);
 			g.setStroke(new BasicStroke(stroke));
 			g.drawLine(firstPointer.x, firstPointer.y, secondPointer.x, secondPointer.y);
-
 			break;
 
 		case RECTANGLE:
 			g.setColor(colors);
 			g.setStroke(new BasicStroke(stroke));
 			g.drawRect(minPointx, minPointy, width, height);
+			break;
 
+		case FILLRECTANGLE:
+			g.setColor(colors);
+			g.fillRect(minPointx, minPointy, width, height);
 			break;
 
 		case TEXT:
@@ -221,6 +225,10 @@ public class RectPanel extends JPanel implements ActionListener, MouseListener, 
 			g.drawOval(minPointx, minPointy, width, height);
 			break;
 
+		case FILL:
+
+		break;
+
 		case PENCIL:
 			g.setColor(colors);
 			g.setStroke(new BasicStroke(stroke));
@@ -237,7 +245,6 @@ public class RectPanel extends JPanel implements ActionListener, MouseListener, 
 		}
 
 		g.dispose();
-		
 		repaint();
 	}
 
@@ -310,11 +317,10 @@ public class RectPanel extends JPanel implements ActionListener, MouseListener, 
 			repaint();
 			g.dispose();
 		} 
-		else if (toolMode == Constants.ToolMode.RECTANGLE) 
+		else if (toolMode == Constants.ToolMode.RECTANGLE || toolMode == Constants.ToolMode.FILLRECTANGLE || toolMode == Constants.ToolMode.TEXT) 
 		{
 			Graphics g = getGraphics();
 			g.setColor(Color.BLACK);
-			g.setXORMode(getBackground());
 			
 			g.drawRect(minPointx + Constants.OFFSET_X, minPointy + Constants.OFFSET_Y,
 			           width, height);
@@ -322,25 +328,11 @@ public class RectPanel extends JPanel implements ActionListener, MouseListener, 
 			secondPointer.setLocation(e.getX() - Constants.OFFSET_X, e.getY() - Constants.OFFSET_Y);
 			repaint();
 			g.dispose();
-		} 
-		else if (toolMode == Constants.ToolMode.TEXT) 
-		{
-			Graphics g = getGraphics();
-			g.setColor(Color.BLACK);
-			g.setXORMode(getBackground());
-
-			g.drawRect(minPointx + Constants.OFFSET_X, minPointy + Constants.OFFSET_Y,
-			           width, height);
-
-			secondPointer.setLocation(e.getX() - Constants.OFFSET_X, e.getY() - Constants.OFFSET_Y);
-			repaint();
-			g.dispose();
-		} 
+		}
 		else if (toolMode == Constants.ToolMode.CIRCLE) 
 		{
 			Graphics g = getGraphics();
 			g.setColor(Color.BLACK);
-			g.setXORMode(getBackground());
 			
 			g.drawOval(minPointx + Constants.OFFSET_X, minPointy + Constants.OFFSET_Y,
 			           width, height);

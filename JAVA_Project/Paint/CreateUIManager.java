@@ -34,10 +34,10 @@ public class CreateUIManager
 	public JPanel CreateToolButton(RectPanel rectPanel) // Tool Button 만들어서 리턴합니다!!!
 	{
 		JPanel toolButtonPanel = new JPanel();
-		toolButtonPanel.setLayout(new GridLayout(2,3,10,10));
+		toolButtonPanel.setLayout(new GridLayout(3,3,10,10));
 		toolButtonPanel.setBounds(10, 10, 300, 100);
 
-		String button_names[] = {"연필", "지우개", "네모", "텍스트", "동그라미", "직선"};
+		String button_names[] = {"연필", "지우개", "네모", "텍스트", "동그라미", "직선", "꽉찬네모", "채우기", "구현중"};
 		JButton[] buttons = new JButton[button_names.length];
 
 		for (int i = 0; i < buttons.length; i++)

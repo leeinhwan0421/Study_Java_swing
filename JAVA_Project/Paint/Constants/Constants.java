@@ -27,6 +27,8 @@ public class Constants
 		RECTANGLE,
 		TEXT,
 		TEXTEDIT,
+		FILLRECTANGLE,
+		FILL
 	}
 
 	public enum StrokeMode
@@ -65,6 +67,12 @@ public class Constants
 
 			case "네모":
 				return ToolMode.RECTANGLE;
+
+			case "꽉찬네모":
+				return ToolMode.FILLRECTANGLE;
+
+			case "채우기":
+				return ToolMode.FILL;
 		}
 
 		return ToolMode.NONE;

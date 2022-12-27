@@ -42,12 +42,10 @@ public class Main
 		f.setVisible(true);
 		f.setSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
 
-		try 
-		{
+		try {
 			Image image = ImageIO.read(new File(Constants.defaulticonPath));
 			f.setIconImage(image);
-		} catch (IOException e) 
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
