@@ -207,6 +207,8 @@ public class RectPanel extends JPanel implements ActionListener, MouseListener, 
 
 			colors = btn.getBackground();
 		}
+
+		figure = null;
 	}
 
 	public void SetImage(BufferedImage image)
