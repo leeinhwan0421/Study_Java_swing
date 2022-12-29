@@ -25,6 +25,7 @@ public class Constants
 		LINE,
 		CIRCLE,
 		RECTANGLE,
+		FIGUREEDIT,
 		TEXT,
 		TEXTEDIT,
 		FILLRECTANGLE,

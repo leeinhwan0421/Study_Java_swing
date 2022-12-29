@@ -1,27 +1,60 @@
 package Paint.FloodFill;
 
-import java.awt.Graphics2D;
-
-import java.awt.Color;
 import java.awt.image.BufferedImage;
+
+import java.util.Stack;
 
 public class FloodFill
 {
-    public static BufferedImage FloodFill(int x, int y, Color targetColor, BufferedImage image)
+    class Node
     {
-        int getRGB = image.getRGB(x, y);
-        int blue = getRGB & 0xff;
-        int green = (getRGB & 0xff00) >> 8;
-        int red = (getRGB & 0xff0000) >> 16;
+        public Node(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
 
-        Color firstColor = new Color(red, green, blue);
-        Graphics2D g = image.createGraphics();
+        int x;
+        int y;
+    }
 
+    Stack<Node> nodes = new Stack<Node>();
+
+    public BufferedImage floodFill(BufferedImage image, int x, int y, int newColor) 
+    {
+        if (image.getRGB(x, y) == newColor) return image;
         
-
-
-
-        g.dispose();
+        flood(image, image.getRGB(x, y), newColor, x, y);
+        
         return image;
+    }
+
+    public void flood(BufferedImage image, int oldColor, int newColor, int x, int y)
+    {
+        nodes.push(new Node(x, y));
+
+        while(true)
+        {
+            if (nodes.empty())
+                break;
+
+            Node node = nodes.pop();
+
+            if (node.x < 0 || node.x >= image.getWidth())
+                continue;
+
+            if (node.y < 0 || node.y >= image.getHeight())
+                continue;
+
+            if (image.getRGB(node.x, node.y) != oldColor)
+                continue;
+
+            image.setRGB(node.x, node.y, newColor);
+
+            nodes.push(new Node(node.x + 1, node.y));
+            nodes.push(new Node(node.x - 1, node.y));
+            nodes.push(new Node(node.x, node.y + 1));
+            nodes.push(new Node(node.x, node.y - 1));
+        }
     }
 }

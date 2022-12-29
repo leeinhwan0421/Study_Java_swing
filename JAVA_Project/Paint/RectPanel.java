@@ -27,6 +27,47 @@ import javax.swing.AbstractAction;
 import Paint.Constants.Constants;
 import Paint.UndoRedo.UndoRedo;
 import Paint.FileSystem.FileChooser;
+import Paint.FloodFill.FloodFill;
+
+class Figure
+{
+	int minX;
+	int minY;
+	int maxX;
+	int maxY;
+	float stroke;
+
+	Color color;
+	Constants.ToolMode mode;
+
+	public int getHeight() { return Math.abs(maxY - minY); }
+
+	public int getWidth() { return Math.abs(maxX - minX); }
+
+	public Figure(int minX, int minY, int maxX, int maxY)
+	{
+		this.minX = minX;
+		this.minY = minY;
+		this.maxX = maxX;
+		this.maxY = maxY;
+	}
+
+	public void SetFigureValue(float stroke, Color color, Constants.ToolMode mode)
+	{
+		this.stroke = stroke;
+		this.color = color;
+		this.mode = mode;
+	}
+
+	public boolean aabbCheck(Point point)
+	{
+		if (point.getX() <= maxX && point.getX() >= minX &&
+			point.getY() <= maxY && point.getY() >= minY)
+			return true;
+
+		return false;	
+	}
+}
 
 public class RectPanel extends JPanel implements ActionListener, MouseListener, MouseMotionListener
 {
@@ -43,6 +84,8 @@ public class RectPanel extends JPanel implements ActionListener, MouseListener, 
 	
 	UndoRedo undoRedo = new UndoRedo();
 	FileChooser fileChooser = new FileChooser(this);
+	FloodFill floodFill = new FloodFill();
+	Figure figure = null;
 
 	AbstractAction textAction = new AbstractAction() 
 	{
@@ -86,12 +129,23 @@ public class RectPanel extends JPanel implements ActionListener, MouseListener, 
 	public void mousePressed(MouseEvent e) 
 	{
 		// 다시 클릭됐을경우 좌표 초기화
-		undoRedo.GetImageLog(drawField);
-
 		firstPointer.setLocation(0, 0);
 		secondPointer.setLocation(0, 0);
 
 		firstPointer.setLocation(e.getX() - Constants.OFFSET_X, e.getY() - Constants.OFFSET_Y);
+
+		if (figure != null)
+		{
+			if (figure.aabbCheck(firstPointer))
+			{
+				toolMode = Constants.ToolMode.FIGUREEDIT;
+			}
+		}
+		
+		if (toolMode != Constants.ToolMode.FIGUREEDIT)
+		{
+			undoRedo.GetImageLog(drawField); // 도형 편집 모드가 아닐때만 저장될 수 있도록 한다.
+		}
 	}
 
 	public void mouseReleased(MouseEvent e) 
@@ -121,7 +175,7 @@ public class RectPanel extends JPanel implements ActionListener, MouseListener, 
 		}
 		else if (buttonActionCommand == "연필" || buttonActionCommand == "지우개" || buttonActionCommand == "네모" ||
 				 buttonActionCommand == "텍스트" || buttonActionCommand == "동그라미" || buttonActionCommand == "직선" ||
-				 buttonActionCommand == "꽉찬네모" || buttonActionCommand == "채우기" || buttonActionCommand == "구현중")
+				 buttonActionCommand == "꽉찬네모" || buttonActionCommand == "채우기" || buttonActionCommand == "도형제어")
 		{
 			toolMode = Constants.SetToolMode(e.getActionCommand());
 		}
@@ -193,11 +247,13 @@ public class RectPanel extends JPanel implements ActionListener, MouseListener, 
 			g.setColor(colors);
 			g.setStroke(new BasicStroke(stroke));
 			g.drawRect(minPointx, minPointy, width, height);
+			SetFigure(minPointx, minPointy, minPointx + width, minPointy + height);
 			break;
 
 		case FILLRECTANGLE:
 			g.setColor(colors);
 			g.fillRect(minPointx, minPointy, width, height);
+			SetFigure(minPointx, minPointy, minPointx + width, minPointy + height);
 			break;
 
 		case TEXT:
@@ -223,11 +279,56 @@ public class RectPanel extends JPanel implements ActionListener, MouseListener, 
 			g.setColor(colors);
 			g.setStroke(new BasicStroke(stroke));
 			g.drawOval(minPointx, minPointy, width, height);
+			SetFigure(minPointx, minPointy, minPointx + width, minPointy + height);
 			break;
 
-		case FILL:
+		case FIGUREEDIT:
+			BufferedImage g1 = undoRedo.Undo();
+			if (g1 == null) return;
+			g.drawImage(g1, 0, 0, null);
+			g.dispose();
+			repaint();
+
+			g = drawField.createGraphics();
+			g.setColor(figure.color);
+			g.setStroke(new BasicStroke(figure.stroke));
+
+			switch(figure.mode)
+			{
+				case CIRCLE:
+					undoRedo.GetImageLog(drawField);
+					g.drawOval(secondPointer.x, secondPointer.y, figure.getWidth(), figure.getHeight());
+					break;
+
+				case RECTANGLE:
+					undoRedo.GetImageLog(drawField);
+					g.drawRect(secondPointer.x, secondPointer.y, figure.getWidth(), figure.getHeight());
+					break;
+
+				case FILLRECTANGLE:
+					undoRedo.GetImageLog(drawField);
+					g.fillRect(secondPointer.x, secondPointer.y, figure.getWidth(), figure.getHeight());
+					break;
+
+				default:
+					break;
+			}
+
+			toolMode = figure.mode;
+			SetFigure(secondPointer.x, secondPointer.y, secondPointer.x + figure.getWidth(), secondPointer.y + figure.getHeight());
+
+			g.dispose();
+			repaint();
 
 		break;
+
+		case FILL:
+			if (minPointx >= 0 && minPointx <= Constants.WIDTH &&
+				minPointy >= 0 && minPointy <= Constants.HEIGHT)
+				{
+					g.drawImage(floodFill.floodFill(drawField, minPointx, minPointy, colors.getRGB()), 0, 0, null);
+				}
+			break;
 
 		case PENCIL:
 			g.setColor(colors);
@@ -329,6 +430,24 @@ public class RectPanel extends JPanel implements ActionListener, MouseListener, 
 			repaint();
 			g.dispose();
 		}
+		else if (toolMode == Constants.ToolMode.FIGUREEDIT)
+		{
+			Graphics g = getGraphics();
+			g.setColor(Color.BLACK);
+
+			if (figure.mode != Constants.ToolMode.CIRCLE)
+			{
+				g.drawRect(secondPointer.x + Constants.OFFSET_X, secondPointer.y + Constants.OFFSET_Y, figure.getWidth(), figure.getHeight());
+			}
+			else
+			{
+				g.drawOval(secondPointer.x + Constants.OFFSET_X, secondPointer.y + Constants.OFFSET_Y, figure.getWidth(), figure.getHeight());
+			}
+
+			secondPointer.setLocation(e.getX() - Constants.OFFSET_X, e.getY() - Constants.OFFSET_Y);
+			repaint();
+			g.dispose();
+		}
 		else if (toolMode == Constants.ToolMode.CIRCLE) 
 		{
 			Graphics g = getGraphics();
@@ -342,6 +461,12 @@ public class RectPanel extends JPanel implements ActionListener, MouseListener, 
 			g.dispose();
 			repaint();
 		}
+	}
+
+	public void SetFigure(int minX, int minY, int maxX, int maxY)
+	{
+		figure = new Figure(minX, minY, maxX, maxY);
+		figure.SetFigureValue(Constants.GetStrokeValue(strokeMode), colors, toolMode);
 	}
 
 	@Override
