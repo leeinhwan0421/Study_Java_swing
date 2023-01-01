@@ -2,8 +2,8 @@ package FiveRock;
 
 import javax.swing.SwingUtilities;
 
-import FiveRock.UI.MainPanel;
 import FiveRock.UI.UIInformation;
+import FiveRock.UI.BackGroundPanel;
 
 import javax.swing.JFrame;
 
@@ -33,11 +33,12 @@ public class Main
 		System.out.println("Created GUI on EDT?" + SwingUtilities.isEventDispatchThread());
 
 		JFrame frame = new JFrame();
-		MainPanel mainPanel = new MainPanel();
+		BackGroundPanel backGroundPanel = new BackGroundPanel();
 
-		frame.add(mainPanel, BorderLayout.NORTH);
+		frame.add(backGroundPanel, BorderLayout.NORTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("FiveRock");
+		frame.setLocation(400, 100);
 		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setSize(UIInformation.getInstance().windowSize.width, UIInformation.getInstance().windowSize.height);

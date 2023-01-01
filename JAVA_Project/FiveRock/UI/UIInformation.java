@@ -17,7 +17,7 @@ public class UIInformation
 		return instance;
 	}
 
-    public Dimension windowSize = new Dimension(1280, 720);
+    public Dimension windowSize = new Dimension(1100, 898);
 
     public String backgroundFilePath = "FiveRock/ImageSource/Background.png";
     public String iconFilePath = "FiveRock/ImageSource/Icon.png";

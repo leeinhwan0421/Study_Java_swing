@@ -9,19 +9,25 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-public class BackGroundImage extends JPanel
+import FiveRock.FileSystem.FileReader;
+
+public class BackGroundPanel extends JPanel
 {
     private BufferedImage bufferedImage;
 
     public BufferedImage getBufferedImage() { return bufferedImage; }
 
-    public BackGroundImage()
+    public BackGroundPanel()
     {
-        bufferedImage = new BufferedImage(722, 720, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage targetImage = FileReader.LoadImage(UIInformation.getInstance().backgroundFilePath);
 
+        bufferedImage = new BufferedImage(targetImage.getWidth(), targetImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
         setImage(bufferedImage);
+
         setPreferredSize(new Dimension(bufferedImage.getWidth(null), bufferedImage.getHeight(null)));
-        
+        setSize(UIInformation.getInstance().windowSize.width, UIInformation.getInstance().windowSize.height);
+        setBackground(new Color(224, 189, 102));
+
         repaint();
     }
 
@@ -29,9 +35,8 @@ public class BackGroundImage extends JPanel
 	{
         this.bufferedImage = bi;
 		Graphics2D g = bufferedImage.createGraphics();
-
-		g.setColor(Color.white);
-		g.fillRect(0, 0, 722, 720);
+        BufferedImage targetImage = FileReader.LoadImage(UIInformation.getInstance().backgroundFilePath);
+		g.drawImage(targetImage, 0, 0, null);
 		g.dispose();
 	}
 

@@ -8,12 +8,19 @@ import java.io.IOException;
 
 public class FileReader
 {
-    public static BufferedImage LoadImage(File file)
+    public static BufferedImage LoadImage(String filePath)
     {
         BufferedImage image = null;
-
-        try { image = ImageIO.read(file); }
-        catch (IOException e) { e.printStackTrace(); }
+        File file = new File(filePath);
+        try 
+        { 
+            image = ImageIO.read(file); 
+        }
+        catch (IOException e) 
+        {
+            e.printStackTrace(); 
+            System.out.println("file is null : " + file.getAbsolutePath());
+        }
 
         return image;
     }
