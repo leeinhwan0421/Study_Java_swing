@@ -40,7 +40,6 @@ public class FileChooser extends JFrame implements ActionListener
     {
         String buttonActionCommand = e.getActionCommand();
 		mode = Constants.SetFileMode(buttonActionCommand);
-
         switch(mode)
         {
             case WRITE:
