@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -17,7 +18,9 @@ public class BackGroundImage extends JPanel
     public BackGroundImage()
     {
         bufferedImage = new BufferedImage(722, 720, BufferedImage.TYPE_INT_ARGB);
+
         setImage(bufferedImage);
+        setPreferredSize(new Dimension(bufferedImage.getWidth(null), bufferedImage.getHeight(null)));
         
         repaint();
     }
