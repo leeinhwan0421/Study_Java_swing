@@ -21,18 +21,17 @@ public class BackGroundPanel extends JPanel
     {
         setLayout(null);
 
-        BufferedImage targetImage = FileReader.LoadImage(UIInformation.getInstance().backgroundFilePath);
-        bufferedImage = new BufferedImage(targetImage.getWidth(), targetImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        setImage(bufferedImage);
+        Init();
         
         setPreferredSize(new Dimension(bufferedImage.getWidth(null), bufferedImage.getHeight(null)));
         setBackground(UIInformation.getInstance().backGroundColor);
         
         createButton = new CreateButton();
+        System.err.println( "stone >>>  " +UIInformation.getInstance());
 
-        add(createButton.CreateMenuButtons());
+        add(createButton.CreateMenuButtons(this));
         add(createButton.createStoneButtons(this));
-
+        add(UIInformation.getInstance().textPanel);
         repaint();
     }
 
@@ -43,7 +42,23 @@ public class BackGroundPanel extends JPanel
         BufferedImage targetImage = FileReader.LoadImage(UIInformation.getInstance().backgroundFilePath);
 		g.drawImage(targetImage, 0, 0, null);
 		g.dispose();
+        repaint();
 	}
+
+    public void Init()
+    {
+        BufferedImage targetImage = FileReader.LoadImage(UIInformation.getInstance().backgroundFilePath);
+        bufferedImage = new BufferedImage(targetImage.getWidth(), targetImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        setImage(bufferedImage);
+    }
+
+    public void DrawImage(BufferedImage targetImage, int x, int y)
+    {
+		Graphics2D g = bufferedImage.createGraphics();
+		g.drawImage(targetImage, x, y, null);
+		g.dispose();
+        repaint();
+    }
 
     protected void paintComponent(Graphics g) 
 	{
