@@ -20,12 +20,10 @@ public class TextPanel extends JPanel
     public TextPanel()
     {
 		setLayout(new GridLayout(queueMaxsize, 1, 0, 0));
-		setBounds(892, 240, 272, 400);
+		setBounds(892, 240, 272, 300);
         setOpaque(false);
         setBackground(new Color(0,0,0));
         setBorder(new LineBorder(Color.black));
-
-        AddJLabel("샘플 텍스트 YES OR NOT");
     }
     
     public void AddJLabel(String text)
@@ -41,5 +39,15 @@ public class TextPanel extends JPanel
         
         jLabels.add(add(mainTextField));
         updateUI();
+    }
+
+    public void DeleteAllJLabel()
+    {
+        while(jLabels.size() != 0)
+        {
+            remove(jLabels.poll());
+        }
+
+        updateUI();;
     }
 }

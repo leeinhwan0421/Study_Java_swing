@@ -32,6 +32,9 @@ public class BackGroundPanel extends JPanel
         add(createButton.CreateMenuButtons(this));
         add(createButton.createStoneButtons(this));
         add(UIInformation.getInstance().textPanel);
+        add(UIInformation.getInstance().characterPanel);
+        add(UIInformation.getInstance().blackCharacterInfoPanel);
+        add(UIInformation.getInstance().whiteCharacterInfoPanel);
         repaint();
     }
 
@@ -39,7 +42,7 @@ public class BackGroundPanel extends JPanel
 	{
         this.bufferedImage = bi;
 		Graphics2D g = bufferedImage.createGraphics();
-        BufferedImage targetImage = FileReader.LoadImage(UIInformation.getInstance().backgroundFilePath);
+        BufferedImage targetImage = FileReader.LoadBufferedImage(UIInformation.getInstance().backgroundFilePath);
 		g.drawImage(targetImage, 0, 0, null);
 		g.dispose();
         repaint();
@@ -47,7 +50,7 @@ public class BackGroundPanel extends JPanel
 
     public void Init()
     {
-        BufferedImage targetImage = FileReader.LoadImage(UIInformation.getInstance().backgroundFilePath);
+        BufferedImage targetImage = FileReader.LoadBufferedImage(UIInformation.getInstance().backgroundFilePath);
         bufferedImage = new BufferedImage(targetImage.getWidth(), targetImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
         setImage(bufferedImage);
     }

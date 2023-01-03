@@ -23,8 +23,8 @@ public class UIInformation
 
     public Dimension windowSize = new Dimension(1200, 898);
 
-    public String backgroundFilePath = "FiveRock/ImageSource/Background.png";
-    public String iconFilePath = "FiveRock/ImageSource/Icon.png";
+    public String backgroundFilePath = "FiveRock/ImageSource/UI/BackGrounds/Background.png";
+    public String iconFilePath = "FiveRock/ImageSource/UI/Icons/Icon.png";
     public String whiteStoneFilePath = "FiveRock/ImageSource/Objects/whiteStone.png";
     public String blackStoneFilePath = "FiveRock/ImageSource/Objects/blackStone.png";
 
@@ -39,4 +39,7 @@ public class UIInformation
     public Node mapSize= new Node(19, 19);
 
     public TextPanel textPanel = new TextPanel();
+    public CharacterPanel characterPanel = new CharacterPanel();
+    public CharacterInformationPanel blackCharacterInfoPanel = new CharacterInformationPanel("Black [ 흑돌 ]", 892, 695, 136, 136);
+    public CharacterInformationPanel whiteCharacterInfoPanel = new CharacterInformationPanel("White [ 백돌 ]", 1028, 695, 136, 136);
 }
