@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -24,6 +25,9 @@ public class StoneButtonListener extends JComponent implements ActionListener
 
     private JButton jButtons[][] = new JButton[UIInformation.getInstance().mapSize.x][UIInformation.getInstance().mapSize.y];
     private Stone stones[][] = new Stone[UIInformation.getInstance().mapSize.x][UIInformation.getInstance().mapSize.y];
+
+    public String blackStoneCharacterFilePath = "FiveRock/ImageSource/UI/PlayerIcon/Character_Black.png";
+    public String whiteStoneCharacterFilePath = "FiveRock/ImageSource/UI/PlayerIcon/Character_White.png";
 
     public StoneButtonListener(BackGroundPanel backGroundPanel)
     {
@@ -198,7 +202,13 @@ public class StoneButtonListener extends JComponent implements ActionListener
                 b_player.setWincountText(1);
                 w_player.setLossCountText(1);
 
-                JOptionPane.showMessageDialog(null, "흑돌 승리");
+                ImageIcon icon_black = new ImageIcon(FileReader.LoadImage(blackStoneCharacterFilePath));
+                JOptionPane.showMessageDialog(
+                        null,
+                        "!!흑돌 승리!!",
+                        "Black is Winner", JOptionPane.INFORMATION_MESSAGE,
+                        icon_black);
+
                 ListenerInformation.getInstance().mainButtonListener.actionPerformed("Exit");
             break;
 
@@ -208,7 +218,13 @@ public class StoneButtonListener extends JComponent implements ActionListener
                 w_player.setWincountText(1);
                 b_player.setLossCountText(1);
 
-                JOptionPane.showMessageDialog(null, "백돌 승리");
+                ImageIcon icon_white = new ImageIcon(FileReader.LoadImage(whiteStoneCharacterFilePath));
+                JOptionPane.showMessageDialog(
+                        null,
+                        "!!백돌 승리!!",
+                        "White is Winner", JOptionPane.INFORMATION_MESSAGE,
+                        icon_white);
+
                 ListenerInformation.getInstance().mainButtonListener.actionPerformed("Exit");
             break;
 
