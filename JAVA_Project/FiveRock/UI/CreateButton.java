@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JPanel;
-import javax.swing.JButton;
 import javax.swing.border.LineBorder;
 
 import FiveRock.Component.RoundedButton;
@@ -57,7 +56,7 @@ public class CreateButton
         stoneButtonPanel.setOpaque(false);
         stoneButtonPanel.setBackground(new Color(0,0,0));
 
-		JButton[][] buttons = new JButton[UIInformation.getInstance().mapSize.x][UIInformation.getInstance().mapSize.y];
+		RoundedButton[][] buttons = new RoundedButton[UIInformation.getInstance().mapSize.x][UIInformation.getInstance().mapSize.y];
 
         ListenerInformation.getInstance().stoneButtonListener = new StoneButtonListener(backGroundPanel);
 
@@ -65,10 +64,10 @@ public class CreateButton
 		{
             for (int j = 0; j < UIInformation.getInstance().mapSize.y; j++)
             {
-                buttons[i][j] = new JButton();
+                buttons[i][j] = new RoundedButton();
                 buttons[i][j].setBorderPainted(false);
-                buttons[i][j].setOpaque(false);
-                buttons[i][j].setBackground(new Color(0,0,0));
+                buttons[i][j].setOpaqueOption(false);
+                buttons[i][j].setBackGroundColor(new Color(0,0,0, 0));
                 buttons[i][j].addActionListener(ListenerInformation.getInstance().stoneButtonListener);
 		
 			    stoneButtonPanel.add(buttons[i][j]);

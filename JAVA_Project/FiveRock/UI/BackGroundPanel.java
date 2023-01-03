@@ -27,7 +27,6 @@ public class BackGroundPanel extends JPanel
         setBackground(UIInformation.getInstance().backGroundColor);
         
         createButton = new CreateButton();
-        System.err.println( "stone >>>  " +UIInformation.getInstance());
 
         add(createButton.CreateMenuButtons(this));
         add(createButton.createStoneButtons(this));
