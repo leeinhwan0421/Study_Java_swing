@@ -32,7 +32,7 @@ public class UIInformation
 
     // 좌표를 채팅에 띄울꺼다.
     public char positionX[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'};
-    public int  positionY[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
+    public int  positionY[] = {19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
 
     public Node mapSizePixelRate = new Node(796, 796);
     public Node mapOffset = new Node(38, 38);

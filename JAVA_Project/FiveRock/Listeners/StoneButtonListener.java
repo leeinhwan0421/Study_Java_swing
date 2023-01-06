@@ -11,10 +11,10 @@ import javax.swing.JOptionPane;
 
 import FiveRock.CustomDataStructure.Node;
 import FiveRock.CustomDataStructure.Stone;
-import FiveRock.CustomDataStructure.Stone.State;
-import FiveRock.FileSystem.FileReader;
-import FiveRock.UI.BackGroundPanel;
 import FiveRock.CustomDataStructure.PlayerInformation;
+import FiveRock.FileSystem.FileReader;
+import FiveRock.Logic.FindOmok;
+import FiveRock.UI.BackGroundPanel;
 import FiveRock.UI.UIInformation;
 
 public class StoneButtonListener extends JComponent implements ActionListener
@@ -78,69 +78,6 @@ public class StoneButtonListener extends JComponent implements ActionListener
         return null;
     }
 
-    public boolean FindFiveStar()
-    {
-        int [][] d = {{0,1}, {1,0}, {1,1}, {-1,1}};
-
-        for (int i = 0; i < UIInformation.getInstance().mapSize.x; i++)
-        {
-            for (int j = 0; j < UIInformation.getInstance().mapSize.y; j++)
-            {
-                if (stones[i][j].StoneState == State.WHITE || stones[i][j].StoneState == State.BLACK)
-                {
-                    for (int k = 0; k < 4; k++)
-                    {
-                        int ax = i;
-                        int ay = j;
-                        int cnt = 1;
-
-                        while(true)
-                        {
-                            ax += d[k][0];
-                            ay += d[k][1];
-
-                            if ( 0 <= ax && ax < UIInformation.getInstance().mapSize.x && 0 <= ay && ay < UIInformation.getInstance().mapSize.y) 
-                            {
-                                if (stones[i][j].StoneState == stones[ax][ay].StoneState)
-                                    cnt++;
-                                else
-                                    break;
-                            }
-                            else break;
-                        }
-
-                        ax = i;
-                        ay = j;
-
-                        while(true)
-                        {
-                            ax -= d[k][0];
-                            ay -= d[k][1];
-
-                            if ( 0 <= ax && ax < UIInformation.getInstance().mapSize.x && 0 <= ay && ay < UIInformation.getInstance().mapSize.y)
-                            {
-                                if (stones[i][j].StoneState == stones[ax][ay].StoneState)
-                                    cnt++;
-                            else
-                                break;
-                            }
-                            else break;
-                        }
-
-                        if (cnt == 5)
-                        {
-                            Stone.State state = stones[i][j].StoneState;
-                            System.out.println("Winner : " + state);
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
 	public void actionPerformed(ActionEvent e) 
     {
         Node node = FindToPoint(e);
@@ -157,6 +94,14 @@ public class StoneButtonListener extends JComponent implements ActionListener
         else if (stones[node.x][node.y].StoneState == mode)
             return;
 
+
+        if (FindOmok.FindThreeThreeStarPoint(stones, node, mode))
+        {
+            UIInformation.getInstance().textPanel.AddJLabel("그 자리는 금수자리입니다.");
+            stones[node.x][node.y].StoneState = Stone.State.NONE;
+            return;
+        }
+
         Rectangle rect = jButtons[node.x][node.y].getBounds();
         String position = UIInformation.getInstance().positionX[node.y] + "" +  UIInformation.getInstance().positionY[node.x];
         
@@ -170,7 +115,7 @@ public class StoneButtonListener extends JComponent implements ActionListener
             stones[node.x][node.y].StoneState = mode;
             SetMode(Stone.State.WHITE);
 
-            if (FindFiveStar())
+            if (FindOmok.FindFiveStar(stones))
                 EndGame(Stone.State.BLACK);
         }
         else
@@ -183,7 +128,7 @@ public class StoneButtonListener extends JComponent implements ActionListener
             stones[node.x][node.y].StoneState = mode;
             SetMode(Stone.State.BLACK);
 
-            if (FindFiveStar())
+            if (FindOmok.FindFiveStar(stones))
                 EndGame(Stone.State.WHITE);
         }
     }

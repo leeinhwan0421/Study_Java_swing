@@ -3,6 +3,7 @@ package FiveRock;
 import javax.swing.SwingUtilities;
 
 import FiveRock.UI.UIInformation;
+import FiveRock.AudioPlayer.AudioPlayer;
 import FiveRock.UI.BackGroundPanel;
 
 import javax.swing.JFrame;
@@ -34,6 +35,7 @@ public class Main
 
 		JFrame frame = new JFrame();
 		BackGroundPanel backGroundPanel = new BackGroundPanel();
+		AudioPlayer.audio();
 
 		frame.add(backGroundPanel, BorderLayout.NORTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
